@@ -86,18 +86,21 @@ def evaluate(spec, pridectModel):
     # Get the average utilization from the metric
     average_utilization = metric_value["average_utilization"]
 
+    total_utilization = metric_value["total_utilization"]
+
     # Calculate target replicas, increase by 1 if utilization is above target, decrease by 1 if utilization is below
     # target
 
     predict_replicas = PredictLogic(current_replicas, inputSize, pridectModel)
     target_replicas = predict_replicas
 
+
     if target_replicas == 0:
         # direct scaling
         target_replicas = current_replicas
         if average_utilization > target_average_utilization:
             target_replicas += 1
-        else:
+        elif total_utilization / (current_replicas - 1) > target_average_utilization:
             target_replicas -= 1
 
     # Build JSON dict with targetReplicas
