@@ -36,10 +36,10 @@ target_average_utilization = 25
 
 def main():
     model_name = "GRU_Model_24"
-    pridectModel = load_model(model_name)
+    predictModel = load_model(model_name)
     # Parse JSON into a dict
     spec = json.loads(sys.stdin.read())
-    evaluate(spec,pridectModel)
+    evaluate(spec,predictModel)
 
 def readData():
     inputList = []
@@ -56,7 +56,7 @@ def readData():
 def ScaleLogic(currentReplicas,currentMetric):
     return math.ceil(currentReplicas * (currentMetric / target_average_utilization))
 
-def PredictLogic(currentReplicas, inputSize, pridectModel):
+def PredictLogic(currentReplicas, inputSize, predictModel):
     targetReplica = 0
     collectedLoad, loadLength = readData()
 
@@ -65,12 +65,12 @@ def PredictLogic(currentReplicas, inputSize, pridectModel):
         sequence = collectedLoad[-inputLength:] or []
         X_val = array(sequence)
         X_val = X_val.reshape((1, inputLength, 1))
-        predictMetric = pridectModel.predict(X_val)
+        predictMetric = predictModel.predict(X_val)
         targetReplica = ScaleLogic(currentReplicas, float(predictMetric))
 
     return targetReplica
 
-def evaluate(spec, pridectModel):
+def evaluate(spec, predictModel):
     inputSize = 24
     
     # Only expect 1 metric provided
@@ -88,13 +88,12 @@ def evaluate(spec, pridectModel):
 
     total_utilization = metric_value["total_utilization"]
 
-    # Calculate target replicas, increase by 1 if utilization is above target, decrease by 1 if utilization is below
-    # target
 
-    predict_replicas = PredictLogic(current_replicas, inputSize, pridectModel)
+    predict_replicas = PredictLogic(current_replicas, inputSize, predictModel)
     target_replicas = predict_replicas
 
 
+    # Calculate target replicas, increase by 1 if utilization is above target, decrease by 1 if utilization is below
     if target_replicas == 0:
         # direct scaling
         target_replicas = current_replicas
