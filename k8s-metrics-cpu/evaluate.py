@@ -1,36 +1,9 @@
-# Copyright 2021 The Custom Pod Autoscaler Authors.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import json
 import sys
 import math
 import pandas as pd
 from numpy import array
 from tensorflow.python.keras.saving.save import load_model
-
-
-# JSON piped into this script example:
-# {
-#   "resource": "php-apache",
-#   "runType": "api",
-#   "metrics": [
-#     {
-#       "resource": "php-apache",
-#       "value": "{\"current_replicas\": 3, \"average_utilization\": 60}"
-#     }
-#   ]
-# }
 
 target_average_utilization = 25
 
@@ -83,12 +56,11 @@ def evaluate(spec, predictModel):
 
     # Get the current replicas from the metric
     current_replicas = metric_value["current_replicas"]
-    # Get the average utilization from the metric
+    # Get the average utilization and total utilization from the metric
     average_utilization = metric_value["average_utilization"]
-
     total_utilization = metric_value["total_utilization"]
 
-
+    # Calculate target replicas by predict modelf
     predict_replicas = PredictLogic(current_replicas, inputSize, predictModel)
     target_replicas = predict_replicas
 
