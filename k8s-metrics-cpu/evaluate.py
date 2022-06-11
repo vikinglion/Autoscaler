@@ -5,7 +5,7 @@ import pandas as pd
 from numpy import array
 from tensorflow.python.keras.saving.save import load_model
 
-target_average_utilization = 25
+target_average_utilization = 50
 
 def main():
     model_name = "GRU_Model_24"
