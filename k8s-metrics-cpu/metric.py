@@ -52,7 +52,6 @@ def metric(spec):
         {
             "current_replicas": current_replicas,
             "average_utilization": average_utilization,
-            "total_utilization" : total_utilization
         }
     ))
 

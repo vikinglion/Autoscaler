@@ -58,22 +58,22 @@ def evaluate(spec, predictModel):
     current_replicas = metric_value["current_replicas"]
     # Get the average utilization and total utilization from the metric
     average_utilization = metric_value["average_utilization"]
-    total_utilization = metric_value["total_utilization"]
 
-    # Calculate target replicas by predict modelf
+    # Calculate target replicas by forecasting model
     predict_replicas = PredictLogic(current_replicas, inputSize, predictModel)
     target_replicas = predict_replicas
 
-
-    # Calculate target replicas, increase by 1 if utilization is above target, decrease by 1 if utilization is below
+    # HPA logic
     if target_replicas == 0:
-        # direct scaling
-        target_replicas = current_replicas
-        if average_utilization > target_average_utilization:
-            target_replicas += 1
-        elif total_utilization / (current_replicas - 1) > target_average_utilization:
-            target_replicas -= 1
+        target_replicas = ScaleLogic(current_replicas,average_utilization)
 
+    # direct scaling
+    # target_replicas = current_replicas
+    # if average_utilization > target_average_utilization:
+    #     target_replicas += 1
+    # else:
+    #     target_replicas -= 1
+    
     # Build JSON dict with targetReplicas
     evaluation = {}
     evaluation["targetReplicas"] = target_replicas
