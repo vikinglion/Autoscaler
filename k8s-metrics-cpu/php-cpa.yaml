@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-cpa
+spec:
+  selector:
+    matchLabels:
+      run: php-cpa
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: php-cpa
+    spec:
+      containers:
+      - name: php-cpa
+        image: k8s.gcr.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-cpa
+  labels:
+    run: php-cpa
+spec:
+  ports:
+  - port: 80
+  selector:
+    run: php-cpa
