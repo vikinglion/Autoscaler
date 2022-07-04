@@ -13,5 +13,7 @@ COPY ./requirements.txt /app/requirements.txt
 WORKDIR /app
 RUN pip3 install -r requirements.txt
 
+COPY ./GRU_Model_24 /app/GRU_Model_24
+
 # Add config, evaluator and metric gathering Py scripts
-ADD config.yaml evaluate.py metric.py GRU_Model_24 /
+ADD config.yaml evaluate.py metric.py /

@@ -8,8 +8,8 @@ from tensorflow.python.keras.saving.save import load_model
 target_average_utilization = 50
 
 def main():
-    model_name = "GRU_Model_24"
-    predictModel = load_model(model_name)
+    model_path = "./GRU_Model_24"
+    predictModel = load_model(model_path)
     # Parse JSON into a dict
     spec = json.loads(sys.stdin.read())
     evaluate(spec,predictModel)
@@ -62,7 +62,7 @@ def evaluate(spec, predictModel):
     # Calculate target replicas by forecasting model
     predict_replicas = PredictLogic(current_replicas, inputSize, predictModel)
     target_replicas = predict_replicas
-
+    
     # HPA logic
     if target_replicas == 0:
         target_replicas = ScaleLogic(current_replicas,average_utilization)

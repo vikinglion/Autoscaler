@@ -22,4 +22,4 @@ spec:
         - /bin/sh
         - -c
         # send request to php-hpa and php-cpa respectively through ClusterIP
-        - "while sleep 0.01; do wget -q -O- http://10.104.86.152:80; wget -q -O- http://10.99.233.147:80; done"
+        - "while sleep 0.1; do wget -q -O- http://10.108.79.37:80; wget -q -O- http://10.96.52.59:80; done"

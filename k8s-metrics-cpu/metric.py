@@ -2,15 +2,11 @@ import json
 import sys
 import pandas as pd
 
-def collectData(data, inputSize):
-    data = pd.DataFrame([data])
+def collectData(avg_usage, inputSize):
+    data = pd.DataFrame([avg_usage])
     isNewData = False
     try:
         df = pd.read_csv('./data.csv', header=None)
-        inputList = df[0].tolist()
-        print(inputList)
-        print("Data size is {size}".format(size = df.shape[0]))
-
     except:
         data.to_csv('./data.csv', mode="w", index=False, header=False)
         df = pd.read_csv('./data.csv', header=None)
@@ -48,12 +44,10 @@ def metric(spec):
     collectData(average_utilization, 24)
 
     # Generate some JSON to pass to the evaluator
-    sys.stdout.write(json.dumps(
-        {
-            "current_replicas": current_replicas,
-            "average_utilization": average_utilization,
-        }
-    ))
+    metric = {}
+    metric["current_replicas"] = current_replicas
+    metric["average_utilization"] = average_utilization
+    sys.stdout.write(json.dumps(metric))
 
 if __name__ == "__main__":
     main()

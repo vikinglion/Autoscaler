@@ -8,7 +8,7 @@ spec:
       containers:
       - name: k8s-metrics-cpu
         image: registry.cn-hangzhou.aliyuncs.com/vikinglion/k8s-metrics-cpu:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
