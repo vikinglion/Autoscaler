@@ -5,7 +5,7 @@ import pandas as pd
 from numpy import array
 from tensorflow.python.keras.saving.save import load_model
 
-target_average_utilization = 50
+target_average_utilization = 0.5
 
 def main():
     model_path = "./GRU_Model_24"

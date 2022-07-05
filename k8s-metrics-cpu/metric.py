@@ -39,7 +39,7 @@ def metric(spec):
     for _, pod_info in pod_metrics_info.items():
         total_utilization += pod_info["Value"]
     # Calculate the average utilization
-    average_utilization = total_utilization / current_replicas
+    average_utilization = total_utilization / current_replicas / 100
 
     collectData(average_utilization, 24)
 
