@@ -33,7 +33,7 @@ def PredictLogic(currentReplicas, inputSize, predictModel):
     targetReplica = 0
     collectedLoad, loadLength = readData()
 
-    if loadLength >= inputSize:
+    if predictModel and loadLength >= inputSize:
         inputLength = inputSize
         sequence = collectedLoad[-inputLength:] or []
         X_val = array(sequence)
